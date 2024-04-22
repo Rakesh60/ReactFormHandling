@@ -1,31 +1,40 @@
-import React from "react";
+import React, { useState } from "react";
 
-function ExpenseForm({setExpense}) {
-    const handleSubmit=(e)=>{
-        e.preventDefault()
-        const expense={...getFormdata(e.target),id:crypto.randomUUID()}
-        setExpense((previous)=>[...previous,expense])
-        e.target.reset()
-        
-    }
-    const getFormdata=(form)=>{
-        const formData=new FormData(form)
-        const data={};
-        for(const [key,values] of formData.entries()){
-            data[key]=values
-        }
-        return data
-    }
+function ExpenseForm({ setExpense }) {
+  const [formData, setFormData] = useState({
+    id:crypto.randomUUID(),
+    title: "",
+    category: "",
+    amount: "",
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // const expense={title,category,amount,id:crypto.randomUUID()}
+    // setExpense((previousExpense)=>[...previousExpense,expense])
+    console.log(formData)
+  };
+
   return (
     <>
       <form className="expense-form" onSubmit={handleSubmit}>
         <div className="input-container">
           <label htmlFor="title">Title</label>
-          <input name="title" id="title" />
+          <input
+            name="title"
+            id="title"
+            value={formData.title}
+            onChange={(e) => setFormData((prevState)=>({...prevState,title:e.target.value}))}
+          />
         </div>
         <div className="input-container">
           <label htmlFor="category">Category</label>
-          <select id="category" name="category">
+          <select
+            id="category"
+            name="category"
+            value={formData.category}
+            onChange={(e) => setFormData((prevState)=>({...prevState,category:e.target.value}))}
+          >
             <option value="" hidden>
               Select Category
             </option>
@@ -38,7 +47,12 @@ function ExpenseForm({setExpense}) {
         </div>
         <div className="input-container">
           <label htmlFor="amount">Amount</label>
-          <input  id="amount" name="amount" />
+          <input
+            id="amount"
+            name="amount"
+            value={formData.amount}
+            onChange={(e) => setFormData((prevState)=>({...prevState,amount:e.target.value}))}
+          />
         </div>
         <button className="add-btn">Add</button>
       </form>
