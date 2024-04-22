@@ -14,6 +14,5 @@ Creates a new FormData object.
 ### FormData.entries()
 Returns an iterator that iterates through all key/value pairs contained in the FormData.
 
-<!-- [a novel](https://en.wikipedia.org/wiki/The_Milagro_Beanfield_War_%28novel%29) -->
 
-<a href="./screenshots/ReactForm.png">a novel</a>
+![React Form Handling using Constructot **new FormData**](./screenshots/ReactForm.png "Expense")
