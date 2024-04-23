@@ -55,7 +55,9 @@ function ExpenseTable({expenses}) {
           </tr>)}
           <tr>
             <th>Total</th>
-            <th></th>
+            <th>{expenses.map(({amount})=>{
+              
+            })}</th>
             <th>₹8100</th>
           </tr>
         </tbody>

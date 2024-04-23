@@ -11,7 +11,8 @@ function ExpenseForm({ setExpense }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     // const expense={title,category,amount,id:crypto.randomUUID()}
-    // setExpense((previousExpense)=>[...previousExpense,expense])
+    setExpense((previousExpense)=>[...previousExpense,{...formData,    id:crypto.randomUUID()
+    }])
     console.log(formData)
   };
 
