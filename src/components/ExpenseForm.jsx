@@ -2,18 +2,41 @@ import React, { useState } from "react";
 
 function ExpenseForm({ setExpense }) {
   const [formData, setFormData] = useState({
-    id:crypto.randomUUID(),
     title: "",
     category: "",
     amount: "",
   });
-
+  const [errors, setErrors] = useState({});
+  const validate = (validateForm) => {
+    const errorData = {};
+    if (!validateForm.title) {
+      errorData.title = "Title is Required";
+    }
+    if (!validateForm.category) {
+      errorData.category = "category is Required";
+    }
+    if (!validateForm.amount) {
+      errorData.amount = "amount is Required";
+    }
+    setErrors(errorData);
+    return errorData;
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
     // const expense={title,category,amount,id:crypto.randomUUID()}
-    setExpense((previousExpense)=>[...previousExpense,{...formData,    id:crypto.randomUUID()
-    }])
-    console.log(formData)
+    const validateRes = validate(formData);
+
+
+    //*Agar Error me ek bhi length hai toh submit nhi hoga
+    if (Object.keys(validateRes).length) return;
+    setExpense((previousExpense) => [
+      ...previousExpense,
+      { ...formData, id: crypto.randomUUID() },
+    ]);
+  };
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevState) => ({ ...prevState, [name]: value }));
   };
 
   return (
@@ -25,8 +48,9 @@ function ExpenseForm({ setExpense }) {
             name="title"
             id="title"
             value={formData.title}
-            onChange={(e) => setFormData((prevState)=>({...prevState,title:e.target.value}))}
+            onChange={handleChange}
           />
+          <p className="error">{errors.title}</p>
         </div>
         <div className="input-container">
           <label htmlFor="category">Category</label>
@@ -34,7 +58,7 @@ function ExpenseForm({ setExpense }) {
             id="category"
             name="category"
             value={formData.category}
-            onChange={(e) => setFormData((prevState)=>({...prevState,category:e.target.value}))}
+            onChange={handleChange}
           >
             <option value="" hidden>
               Select Category
@@ -45,6 +69,8 @@ function ExpenseForm({ setExpense }) {
             <option value="education">Education</option>
             <option value="medicine">Medicine</option>
           </select>{" "}
+          <p className="error">{errors.category}</p>
+
         </div>
         <div className="input-container">
           <label htmlFor="amount">Amount</label>
@@ -52,8 +78,10 @@ function ExpenseForm({ setExpense }) {
             id="amount"
             name="amount"
             value={formData.amount}
-            onChange={(e) => setFormData((prevState)=>({...prevState,amount:e.target.value}))}
+            onChange={handleChange}
           />
+           <p className="error">{errors.amount}</p>
+
         </div>
         <button className="add-btn">Add</button>
       </form>
