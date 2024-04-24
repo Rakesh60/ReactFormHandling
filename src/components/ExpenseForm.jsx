@@ -1,41 +1,32 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 function ExpenseForm({ setExpense }) {
-  const [formData, setFormData] = useState({
-    id:crypto.randomUUID(),
-    title: "",
-    category: "",
-    amount: "",
-  });
-  const myRef=useRef(0)
-  let myNum=0;
-  console.log(myRef)
-
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     // const expense={title,category,amount,id:crypto.randomUUID()}
-    setExpense((previousExpense)=>[...previousExpense,{...formData,    id:crypto.randomUUID()
-    }])
-    console.log(formData)
+    setExpense((previousExpense) => [
+      ...previousExpense,
+      {title:titleRef.current.value,
+        category:categoryRef.current.value,
+        amount:amountRef.current.value,
+        id:crypto.randomUUID()
+       },
+    ]);
   };
+  const titleRef=useRef(null)
+  const categoryRef=useRef(null)
+  const amountRef=useRef(null)
 
   return (
-    <>
-    <button onClick={()=>{
-      myRef.current=myRef.current+1
-      myNum=myNum+1
-      console.log(myNum)
-      console.log(myRef)
-    }}>ABC</button>
-    <h1>MyRef={myRef.current} and MyNum={myNum}</h1>
+   
       <form className="expense-form" onSubmit={handleSubmit}>
         <div className="input-container">
           <label htmlFor="title">Title</label>
           <input
             name="title"
             id="title"
-            value={formData.title}
-            onChange={(e) => setFormData((prevState)=>({...prevState,title:e.target.value}))}
+            ref={titleRef}
           />
         </div>
         <div className="input-container">
@@ -43,8 +34,7 @@ function ExpenseForm({ setExpense }) {
           <select
             id="category"
             name="category"
-            value={formData.category}
-            onChange={(e) => setFormData((prevState)=>({...prevState,category:e.target.value}))}
+            ref={categoryRef}
           >
             <option value="" hidden>
               Select Category
@@ -61,13 +51,12 @@ function ExpenseForm({ setExpense }) {
           <input
             id="amount"
             name="amount"
-            value={formData.amount}
-            onChange={(e) => setFormData((prevState)=>({...prevState,amount:e.target.value}))}
+            ref={amountRef}
           />
         </div>
         <button className="add-btn">Add</button>
       </form>
-    </>
+    
   );
 }
 
