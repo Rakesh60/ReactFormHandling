@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import Input from "./Input";
+import Select from "./Select";
 
 function ExpenseForm({ setExpense }) {
   const [formData, setFormData] = useState({
@@ -10,10 +12,10 @@ function ExpenseForm({ setExpense }) {
   const validate = (validateForm) => {
     const errorData = {};
     if (!validateForm.title) {
-      errorData.title = "Title is Required";
+      errorData.title = "title is Required";
     }
     if (!validateForm.category) {
-      errorData.category = "category is Required";
+      errorData.category = "please select a category";
     }
     if (!validateForm.amount) {
       errorData.amount = "amount is Required";
@@ -21,68 +23,69 @@ function ExpenseForm({ setExpense }) {
     setErrors(errorData);
     return errorData;
   };
+
+
+
+  //?Submitting Form Data
   const handleSubmit = (e) => {
     e.preventDefault();
     // const expense={title,category,amount,id:crypto.randomUUID()}
     const validateRes = validate(formData);
 
-
-    //*Agar Error me ek bhi length hai toh submit nhi hoga
+    //*Agar Error me ek bhi length hai toh submit nhi hoga 
     if (Object.keys(validateRes).length) return;
     setExpense((previousExpense) => [
       ...previousExpense,
       { ...formData, id: crypto.randomUUID() },
     ]);
+    setFormData({
+      title: "",
+      category: "",
+      amount: "",
+    })
   };
+
+
+  //?When User type Input unidirectional data
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({ ...prevState, [name]: value }));
   };
 
+
+
+
   return (
     <>
       <form className="expense-form" onSubmit={handleSubmit}>
-        <div className="input-container">
-          <label htmlFor="title">Title</label>
-          <input
-            name="title"
-            id="title"
-            value={formData.title}
-            onChange={handleChange}
-          />
-          <p className="error">{errors.title}</p>
-        </div>
-        <div className="input-container">
-          <label htmlFor="category">Category</label>
-          <select
-            id="category"
-            name="category"
-            value={formData.category}
-            onChange={handleChange}
-          >
-            <option value="" hidden>
-              Select Category
-            </option>
-            <option value="grocery">Grocery</option>
-            <option value="clothes">Clothes</option>
-            <option value="bills">Bills</option>
-            <option value="education">Education</option>
-            <option value="medicine">Medicine</option>
-          </select>{" "}
-          <p className="error">{errors.category}</p>
+        {/* //!Custom Input */}
+        <Input
+          label={"Title"}
+          name={"title"}
+          id={"title"}
+          value={formData.title}
+          onChange={handleChange}
+          error={errors.title}
+        />
 
-        </div>
-        <div className="input-container">
-          <label htmlFor="amount">Amount</label>
-          <input
-            id="amount"
-            name="amount"
-            value={formData.amount}
-            onChange={handleChange}
-          />
-           <p className="error">{errors.amount}</p>
-
-        </div>
+        <Select
+          id={"category"}
+          label={'Category'}
+          name={"category"}
+          value={formData.category}
+          onChange={handleChange}
+          options={["grocery", "clothes", "bills", "education", "medicine"]}
+          error={errors.category}
+          defaultOption={'Select a Category'}
+        />
+        <Input
+          label={"Amount"}
+          id={"amount"}
+          name={"amount"}
+          value={formData.amount}
+          onChange={handleChange}
+          error={errors.amount}
+        />
         <button className="add-btn">Add</button>
       </form>
     </>
