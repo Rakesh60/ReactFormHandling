@@ -5,14 +5,18 @@ This template provides a minimal setup to get React working in Vite with HMR and
 Currently, two official plugins are available:
 
 ### The FormData interface provides a way to construct a set of key/value pairs representing form fields and their values.
+
 ### An object implementing FormData can directly be used in a for...of structure, instead of entries(): for (const p of myFormData) is equivalent to for (const p of myFormData.entries()).
 
 #Constructor
+
 ### FormData()
+
 Creates a new FormData object.
 
 ### FormData.entries()
+
 Returns an iterator that iterates through all key/value pairs contained in the FormData.
 
-
-![React Form Handling using Constructot **new FormData**](./screenshots/ReactForm.png "Expense")
+![React Form Handling using Constructot **new FormData**](./screenshots/AllCategory.jpg "Expense")
+![React Form Handling using Constructot **new FormData**](./screenshots/FilteredCategory.jpg "Expense")
