@@ -1,19 +1,33 @@
 import React, { useState } from "react";
 import { useFilter } from "../hooks/useFilter";
+import ContextMenu from "./ContextMenu";
 
+function ExpenseTable({ expenses, setExpense }) {
+  const [position, setPosition] = useState({});
+  const [filterdData, setQuery] = useFilter(expenses, (data) => data.category);
+  const [rowId, setRowID] = useState("");
 
-function ExpenseTable({ expenses }) {
-  const [filterdData,setQuery]=useFilter(expenses,(data)=>data.category)
-const totalAmount=filterdData.reduce((accumulator,current)=>accumulator+current.amount,0)
+  const totalAmount = filterdData.reduce(
+    (accumulator, current) => accumulator + current.amount,
+    0
+  );
 
   return (
     <>
-      <table className="expense-table">
+      <ContextMenu
+        menuPosition={position}
+        setPosition={setPosition}
+        setExpense={setExpense}
+        rowId={rowId}
+      />
+      <table className="expense-table" onClick={() => setPosition({})}>
         <thead>
           <tr>
             <th>Title</th>
             <th>
-              <select onChange={(e) => setQuery(e.target.value.toLocaleLowerCase())}>
+              <select
+                onChange={(e) => setQuery(e.target.value.toLocaleLowerCase())}
+              >
                 <option value="">All</option>
                 <option value="grocery">Grocery</option>
                 <option value="clothes">Clothes</option>
@@ -48,23 +62,34 @@ const totalAmount=filterdData.reduce((accumulator,current)=>accumulator+current.
           </tr>
         </thead>
         <tbody>
-        
           {filterdData.map(({ id, title, category, amount }) => (
-            <tr key={id}>
+            <tr
+              onContextMenu={(e) => {
+                e.preventDefault();
+                setPosition({ left: e.clientX, top: e.clientY });
+                setRowID(id);
+              }}
+              key={id}
+            >
               <td>{title}</td>
               <td>{category}</td>
               <td>₹ {amount}</td>
             </tr>
           ))}
-       
-          {totalAmount>0?<tr>
-            <th>Total</th>
-            <th></th>
-            <th>₹{totalAmount}</th>
-          </tr>:<tr>
-            
-            <th colSpan={3} style={{textAlign:'center'}}>No Item is available</th>
-          </tr>}
+
+          {totalAmount > 0 ? (
+            <tr>
+              <th>Total</th>
+              <th></th>
+              <th>₹{totalAmount}</th>
+            </tr>
+          ) : (
+            <tr>
+              <th colSpan={3} style={{ textAlign: "center" }}>
+                No Item is available
+              </th>
+            </tr>
+          )}
         </tbody>
       </table>
     </>
