@@ -1,12 +1,11 @@
 import React, { useState } from "react";
+import { useFilter } from "../hooks/useFilter";
+
 
 function ExpenseTable({ expenses }) {
-  const [mycategory, setMyCategory] = useState("");
-  console.log(mycategory.length);
-  const filterdExpense = expenses.filter((expense) => {
-    return expense.category.toLowerCase().includes(mycategory);
-  });
-  console.log(filterdExpense)
+  const [filterdData,setQuery]=useFilter(expenses,(data)=>data.category)
+const totalAmount=filterdData.reduce((accumulator,current)=>accumulator+current.amount,0)
+
   return (
     <>
       <table className="expense-table">
@@ -14,7 +13,7 @@ function ExpenseTable({ expenses }) {
           <tr>
             <th>Title</th>
             <th>
-              <select onChange={(e) => setMyCategory(e.target.value.toLocaleLowerCase())}>
+              <select onChange={(e) => setQuery(e.target.value.toLocaleLowerCase())}>
                 <option value="">All</option>
                 <option value="grocery">Grocery</option>
                 <option value="clothes">Clothes</option>
@@ -50,18 +49,22 @@ function ExpenseTable({ expenses }) {
         </thead>
         <tbody>
         
-          {filterdExpense.map(({ id, title, category, amount }) => (
+          {filterdData.map(({ id, title, category, amount }) => (
             <tr key={id}>
               <td>{title}</td>
               <td>{category}</td>
               <td>₹ {amount}</td>
             </tr>
           ))}
-          <tr>
+       
+          {totalAmount>0?<tr>
             <th>Total</th>
-            <th>{expenses.map(({ amount }) => {})}</th>
-            <th>₹8100</th>
-          </tr>
+            <th></th>
+            <th>₹{totalAmount}</th>
+          </tr>:<tr>
+            
+            <th colSpan={3} style={{textAlign:'center'}}>No Item is available</th>
+          </tr>}
         </tbody>
       </table>
     </>
