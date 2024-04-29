@@ -2,13 +2,7 @@ import React, { useState } from "react";
 import Input from "./Input";
 import Select from "./Select";
 
-function ExpenseForm({ setExpense }) {
-  const [formData, setFormData] = useState({
-    title: "",
-    category: "",
-    amount: "",
-    // email: "",
-  });
+function ExpenseForm({ setExpense, formData, setFormData }) {
   const [errors, setErrors] = useState({});
   //* Validation Function
   const ValidateRules = {

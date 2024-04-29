@@ -1,6 +1,13 @@
 import React from "react";
 
-function ContextMenu({ menuPosition, setPosition, setExpense, rowId }) {
+function ContextMenu({
+  menuPosition,
+  setPosition,
+  setExpense,
+  expenses,
+  rowId,
+  setFormData,
+}) {
   if (!menuPosition.left) {
     return;
   }
@@ -9,6 +16,11 @@ function ContextMenu({ menuPosition, setPosition, setExpense, rowId }) {
       <div
         onClick={() => {
           console.log("editing");
+          const fileterdData = expenses.filter(
+            (expense) => expense.id == rowId
+          );
+          console.log(fileterdData);
+          // setFormData({title,category,amount});
           setPosition({});
         }}
       >
