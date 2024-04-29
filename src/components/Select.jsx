@@ -21,7 +21,7 @@ function Select({
         )}
 
         {options.map((option, i) => (
-          <option key={i} value={option}>
+          <option key={i} value={option.toLowerCase()}>
             {option}
           </option>
         ))}

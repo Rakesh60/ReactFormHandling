@@ -7,6 +7,7 @@ function ContextMenu({
   expenses,
   rowId,
   setFormData,
+  setEditingRowID,
 }) {
   if (!menuPosition.left) {
     return;
@@ -16,11 +17,13 @@ function ContextMenu({
       <div
         onClick={() => {
           console.log("editing");
-          const fileterdData = expenses.filter(
-            (expense) => expense.id == rowId
-          );
-          console.log(fileterdData);
-          // setFormData({title,category,amount});
+          const { title, category, amount } = expenses.find((expense) => {
+            return expense.id === rowId;
+          });
+
+          console.log(title, category, amount);
+          setFormData({ title, category, amount });
+          setEditingRowID(rowId);
           setPosition({});
         }}
       >

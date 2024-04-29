@@ -2,7 +2,13 @@ import React, { useState } from "react";
 import Input from "./Input";
 import Select from "./Select";
 
-function ExpenseForm({ setExpense, formData, setFormData }) {
+function ExpenseForm({
+  setExpense,
+  formData,
+  setFormData,
+  editingRowId,
+  setEditingRowID,
+}) {
   const [errors, setErrors] = useState({});
   //* Validation Function
   const ValidateRules = {
@@ -60,6 +66,26 @@ function ExpenseForm({ setExpense, formData, setFormData }) {
 
     //*Agar Error me ek bhi length hai toh submit nhi hoga
     if (Object.keys(validateRes).length) return;
+
+    //? Updating logic ----
+    if (editingRowId) {
+      setExpense((previousState) =>
+        previousState.map((singleExpense) => {
+          if (singleExpense.id === editingRowId) {
+            return { ...formData, id: editingRowId };
+          }
+          return singleExpense;
+        })
+      );
+      setEditingRowID("");
+      setFormData({
+        title: "",
+        category: "",
+        amount: "",
+      });
+      return;
+    }
+
     setExpense((previousExpense) => [
       ...previousExpense,
       { ...formData, id: crypto.randomUUID() },
@@ -116,7 +142,7 @@ function ExpenseForm({ setExpense, formData, setFormData }) {
           onChange={handleChange}
           error={errors.email}
         /> */}
-        <button className="add-btn">Add</button>
+        <button className="add-btn">{editingRowId ? "Save" : "Add"}</button>
       </form>
     </>
   );
