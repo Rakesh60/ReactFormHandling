@@ -20,7 +20,7 @@ function App() {
   return (
     <>
       <main>
-        
+        <h1>My Expense Tracker</h1>
         <div className="expense-tracker">
           <ExpenseForm
             setExpense={setExpense}
