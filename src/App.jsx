@@ -5,21 +5,22 @@ import "./App.css";
 import ExpenseForm from "./components/ExpenseForm";
 import ExpenseTable from "./components/ExpenseTable";
 import expenseData from "./expenseData";
+import { useLocalStorage } from "./hooks/useLocalStorage";
 
 function App() {
-  const [editingRowId, setEditingRowID] = useState("");
-  const [formData, setFormData] = useState({
+  const [editingRowId, setEditingRowID] = useLocalStorage('editing','');
+  const [formData, setFormData] = useLocalStorage('formData',{
     title: "",
     category: "",
     amount: "",
     // email: "",
   });
-  const [expenses, setExpense] = useState(expenseData);
+  const [expenses, setExpense] = useLocalStorage('expenseData',expenseData);
 
   return (
     <>
       <main>
-        <h1>Track Your Expense</h1>
+        
         <div className="expense-tracker">
           <ExpenseForm
             setExpense={setExpense}
