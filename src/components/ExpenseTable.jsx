@@ -12,7 +12,6 @@ function ExpenseTable({ expenses, setExpense, setFormData, setEditingRowID }) {
     (accumulator, current) => accumulator + Number(current.amount),
     0
   );
-
   return (
     <>
       <ContextMenu
